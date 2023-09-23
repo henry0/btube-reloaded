@@ -38,12 +38,6 @@ export const postEdit = async(req, res) => {
         description,
         hashtags: Video.formatHashtags(hashtags),
     });
-    /*
-    video.title = title;
-    video.description = description;
-    video.hashtags = hashtags.split(",").map((word) => word.startsWith("#") ? word : `#${word}`);
-    await video.save();
-    */
     console.log(req.body)
     return res.redirect(`/videos/${id}`);
 }
@@ -72,5 +66,21 @@ export const postUpload = async(req, res) => {
         });
     }
 }
-export const search = (req, res) => res.send("Search");
-export const deleteVideo = (req, res) => res.send("delete video");
+export const deleteVideo = async(req, res) => {
+    const { id } = req.params;
+    console.log(id);
+    await Video.findOneAndDelete(id);
+    return res.redirect("/");
+}
+export const search = async(req, res) => {
+    const { keyword } = req.query;
+    let videos = [];
+    if(keyword){
+        videos = await Video.find({
+            title: {
+                $regex: new RegExp(keyword, "i"),
+            },
+        });
+    }
+    return res.render("search", { pageTitle: "Search", videos });
+};
