@@ -1,4 +1,6 @@
 extends base.pug
 
 block content 
-    h2 Watch Video
+    p=video.description
+    small=video.createAt
+    a(href=`/videos/${video.id}/edit`) Edit Video &rarr; 

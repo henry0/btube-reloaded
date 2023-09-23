@@ -1,4 +1,8 @@
 extends base.pug
 
 block content 
-    h2 Edit Video
+    form(method="POST", action=`/videos/${video.id}/edit`)
+        input(placeholder="Title", required, type="text", name="title", value=video.title)
+        input(placeholder="Description", required, type="text", name="description", value=video.description)
+        input(placeholder="Hashtags", required, type="text", name="hashtags", value=video.hashtags.join())
+        input(type="submit", value="Edit Video")
